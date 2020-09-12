@@ -5,12 +5,15 @@
 
 int main()
 {
-//Primeiro bloco - entrada do valor e validação
 printf("Programa de validacao de numero de cartao de credito\n");
 int valida1;
 char cartao[256];
 char bandeira[256]="";
+char multiplicacoes[256]=" ";
+char nMultiplicados[256]=" ";
+int verificador;
 do{
+    //Primeiro bloco - entrada do valor e validação
     valida1=0; //Variavel para validacao de entrada
     char entrada[256];
     char mensagem[256]=" ";
@@ -32,9 +35,8 @@ do{
     }
     if(strlen(mensagem) > 1){
         printf("\n\nEntrada incorreta: caracter(es) invalido(s): %s\n",mensagem); // exibe os caracteres invalidos da entrada
-
     }
-    //Verifica se aoperadora é valida
+    //Verifica se a operadora é valida
     else{
         char temp[3]=" ";
         int op;
@@ -57,7 +59,56 @@ do{
             valida1++;
        }
     }
-    printf("operadora %s",bandeira);
+    //Calculo dos dígitos a serem multiplicados
+    if (valida1==0){
+        int temp1;
+        char temp2[3];
+        int controle=0;
+        for (int cont3=(strlen(entrada)-2);cont3>=0;cont3--){
+            temp1=(entrada[cont3]-'0')*2;
+            sprintf(temp2, "%i", temp1);// inteiro temp1 para a string temp2
+            if (controle==0){
+                strcpy(multiplicacoes,temp2);
+                controle++;
+                 cont3--;
+            }
+            else{
+                strcat(multiplicacoes,temp2);
+                 cont3--;
+            }
+        }
+        int soma1=0;
+        for(int cont4=0;cont4<strlen(multiplicacoes);cont4++){
+            soma1=soma1+(multiplicacoes[cont4]-'0');
+        }
+        //Calculo da soma dos demais numeros
+        controle=0;
+        for (int cont3=(strlen(entrada)-1);cont3>=0;cont3--){
+            temp1=(entrada[cont3]-'0');
+            sprintf(temp2, "%i", temp1);// inteiro temp1 para a string temp2
+            if (controle==0){
+                strcpy(nMultiplicados,temp2);
+                controle++;
+                 cont3--;
+            }
+            else{
+                strcat(nMultiplicados,temp2);
+                 cont3--;
+            }
+        }
+        int soma2=0;
+        for(int cont4=0;cont4<strlen(nMultiplicados);cont4++){
+            soma2=soma2+(nMultiplicados[cont4]-'0');
+        }
+        verificador=soma2+soma1;
+    }
+    if (verificador%10==0){
+        printf("operadora %s",bandeira);
+    }
+    else {
+        printf("INVÁLIDO");
+    }
+
     fflush(stdin); //limpa as entradas
 }while(valida1>0);
 
